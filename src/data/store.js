@@ -1,12 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import firebase from '../firebase';
 
 Vue.use(Vuex);
-Vue.use(firebase);
-
-const db = firebase.database;
-var movieRef = db.collection('pelicula');
 
 export default new Vuex.Store({
   state: {
@@ -19,11 +14,5 @@ export default new Vuex.Store({
   },
   mutations: {},
   actions: {},
-  getters: {
-    getMovies: () => {
-      console.log(movieRef.get());
-
-      return movieRef.get();
-    },
-  },
+  getters: {},
 });

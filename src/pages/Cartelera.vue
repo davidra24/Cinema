@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import Navbar from "../components/navbar/Navbar";
 import Cartel from "../components/cartelera/Cartel";
+import { get } from "../data/Api";
 export default {
   name: "Cartelera",
   data() {
@@ -32,12 +32,11 @@ export default {
     Navbar,
     Cartel
   },
+  methods: {},
   mounted() {
-    movies = $store.getters;
+    get("pelicula");
   },
-  computed: {
-    movies: mapGetters(["getMovies"])
-  }
+  computed: {}
 };
 </script>
 
