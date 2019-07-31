@@ -5,7 +5,11 @@
         <div class="col-12">
           <h2>Cartelera</h2>
           <div class="row">
-            <div class="col-12 col-md-6 col-lg-4">Hola</div>
+            <div>
+              <div v-for="movie in movies" :key="movie.id" class="col-12 col-md-6 col-lg-4">
+                <Cartel :pelicula="movie" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -14,11 +18,25 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Navbar from "../components/navbar/Navbar";
+import Cartel from "../components/cartelera/Cartel";
 export default {
   name: "Cartelera",
+  data() {
+    return {
+      movies: []
+    };
+  },
   components: {
-    Navbar
+    Navbar,
+    Cartel
+  },
+  mounted() {
+    movies = $store.getters;
+  },
+  computed: {
+    movies: mapGetters(["getMovies"])
   }
 };
 </script>
