@@ -36,22 +36,25 @@ export default {
     Cartel,
     Loading
   },
-  methods: {},
-  mounted() {
-    db.collection("pelicula")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          const data = {
-            id: doc.id,
-            nombre: doc.data().nombre,
-            imagen: doc.data().imagen
-          };
-          this.movies.push(data);
-          console.log(this.movies);
+  methods: {
+    get() {
+      db.collection("pelicula")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const data = {
+              id: doc.id,
+              nombre: doc.data().nombre,
+              imagen: doc.data().imagen
+            };
+            this.movies.push(data);
+          });
+          this.loading = false;
         });
-        this.loading = false;
-      });
+    }
+  },
+  mounted() {
+    this.get();
   },
   computed: {}
 };

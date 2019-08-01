@@ -16,6 +16,11 @@ export default new Router({
       component: Cartelera,
     },
     {
+      path: '/cartelera',
+      name: 'Cartelera',
+      component: Cartelera,
+    },
+    {
       path: '/cartelera/:id',
       name: 'Pelicula',
       component: Pelicula,

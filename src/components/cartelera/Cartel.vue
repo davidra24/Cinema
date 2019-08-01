@@ -14,9 +14,7 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    console.log(this.pelicula);
-  }
+  mounted() {}
 };
 </script>
 
