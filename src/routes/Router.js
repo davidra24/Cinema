@@ -5,6 +5,7 @@ import Cupones from '../pages/Cupones';
 import Pelicula from '../pages/Pelicula';
 import NotFound from '../components/notFound/NotFound';
 import Reserva from '../pages/Reserva';
+import Reservas from '../pages/Reservas';
 
 Vue.use(Router);
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/cartelera',
       name: 'Cartelera',
       component: Cartelera,
+    },
+    {
+      path: '/reservas',
+      name: 'Reservas',
+      component: Reservas,
     },
     {
       path: '/reserva/:id/:id_pelicula',

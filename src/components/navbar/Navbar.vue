@@ -26,6 +26,11 @@
               <router-link class="navbar-brand" to="/cupones">Cupones</router-link>
             </li>
           </div>
+          <div v-if="auth">
+            <li class="nav-item">
+              <router-link class="navbar-brand" to="/reservas">Reservas</router-link>
+            </li>
+          </div>
         </ul>
         <div v-if="auth">
           <div v-if="loading">

@@ -20,7 +20,7 @@
                 </button>
               </div>
               <div v-else class="space">
-                <button class="btn btn-block btn-success round" @click="noExisteCupon">
+                <button class="btn btn-block btn-success round" @click="noExisteCupon(coupon.id)">
                   <font-awesome-icon icon="gift" size="10x" />
                   <h3>
                     <strong>{{coupon.descuento}}</strong>
@@ -129,7 +129,7 @@ export default {
         timer: 1500
       });
     },
-    noExisteCupon() {
+    noExisteCupon(id_cupon) {
       this.$swal({
         position: "top-end",
         type: "success",
