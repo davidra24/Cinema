@@ -21,9 +21,11 @@
               <span class="sr-only">(current)</span>
             </router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="navbar-brand" to="/cupones">Cupones</router-link>
-          </li>
+          <div v-if="auth">
+            <li class="nav-item">
+              <router-link class="navbar-brand" to="/cupones">Cupones</router-link>
+            </li>
+          </div>
         </ul>
         <div v-if="auth">
           <div v-if="loading">
@@ -73,7 +75,12 @@
         </div>
       </div>
     </nav>
-    <slot />
+    <div v-if="auth">
+      <slot :session="auth" />
+    </div>
+    <div v-else>
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -91,7 +98,7 @@ export default {
       loading: false,
       usuario: "",
       contrasena: "",
-      auth: null
+      auth: ""
     };
   },
   mounted() {
@@ -99,7 +106,7 @@ export default {
   },
   methods: {
     isLoggued() {
-      this.auth = firebase.auth().currentUser.getIdToken();
+      this.auth = firebase.auth().currentUser.uid;
     },
     login() {
       this.loading = true;
@@ -109,7 +116,6 @@ export default {
         .then(
           user => {
             this.auth = user.user.email;
-            localStorage.setItem("user", this.auth);
             this.$swal({
               position: "top-end",
               type: "success",
