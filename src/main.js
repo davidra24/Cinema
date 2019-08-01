@@ -6,12 +6,14 @@ import background from './assets/background.jpg';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGift } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import VueSweetalert2 from 'vue-sweetalert2';
 
 library.add(faGift);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
+Vue.use(VueSweetalert2);
 new Vue({
   el: '#app',
   router,

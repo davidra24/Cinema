@@ -16,7 +16,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <router-link class="navbar-brand" to="/cartelera">
+            <router-link class="navbar-brand" to="/">
               Películas
               <span class="sr-only">(current)</span>
             </router-link>
@@ -25,16 +25,52 @@
             <router-link class="navbar-brand" to="/cupones">Cupones</router-link>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Usuario" aria-label="Search" />
-          <input
-            class="form-control mr-sm-2"
-            type="password"
-            placeholder="Contraseña"
-            aria-label="Search"
-          />
-          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Login</button>
-        </form>
+        <div v-if="auth">
+          <div v-if="loading">
+            <Miniloading />
+          </div>
+          <div v-else>
+            <button
+              class="btn btn-outline-danger my-2 my-sm-0"
+              @click="logout"
+              type="button"
+            >Cerrar sesión</button>
+          </div>
+        </div>
+        <div v-else>
+          <!-- <form @submit.prevent="login" class="form-inline my-2 my-lg-0">-->
+          <div v-if="loading">
+            <Miniloading />
+          </div>
+          <div v-else>
+            <form class="form-inline my-2 my-lg-0">
+              <input
+                v-model="usuario"
+                class="form-control mr-sm-2"
+                type="text"
+                placeholder="Usuario"
+                aria-label="Search"
+              />
+              <input
+                v-model="contrasena"
+                class="form-control mr-sm-2"
+                type="password"
+                placeholder="Contraseña"
+                aria-label="Search"
+              />
+              <button
+                class="btn btn-outline-success my-2 my-sm-0"
+                @click="login"
+                type="button"
+              >Iniciar sesión</button>
+              <button
+                class="btn btn-outline-warning my-2 my-sm-0"
+                @click="register"
+                type="button"
+              >Registrarse</button>
+            </form>
+          </div>
+        </div>
       </div>
     </nav>
     <slot />
@@ -42,9 +78,101 @@
 </template>
 
 <script>
+import firebase from "firebase";
+import Miniloading from "../loading/Miniloading";
 export default {
   name: "Navbar",
-  components: {}
+  components: {
+    Miniloading
+  },
+  data: function() {
+    return {
+      loading: false,
+      usuario: "",
+      contrasena: "",
+      auth: null
+    };
+  },
+  methods: {
+    login() {
+      this.loading = true;
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.usuario, this.contrasena)
+        .then(
+          user => {
+            this.auth = user.user.email;
+            localStorage.setItem("user", this.auth);
+            this.$swal({
+              position: "top-end",
+              type: "success",
+              title: "Sesión iniciada",
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.loading = false;
+          },
+          error => {
+            this.$swal({
+              position: "top-end",
+              type: "error",
+              title: `${error.message}`,
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.loading = false;
+          }
+        );
+    },
+    logout() {
+      this.loading = true;
+      firebase
+        .auth()
+        .signOut()
+        .then(user => {
+          this.auth = null;
+          localStorage.removeItem("user");
+          this.$swal({
+            position: "top-end",
+            type: "success",
+            title: "Sesión cerrada",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          this.loading = false;
+        });
+    },
+    register(e) {
+      this.loading = true;
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.usuario, this.contrasena)
+        .then(
+          user => {
+            this.$swal({
+              position: "top-end",
+              type: "success",
+              title: "Se ha creado una cuenta nueva",
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.$router.go({ path: this.$router.path });
+            this.loading = false;
+          },
+          err => {
+            this.$swal({
+              position: "top-end",
+              type: "error",
+              title: `${err.message}`,
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.loading = false;
+          }
+        );
+      e.preventDefault();
+    }
+  }
 };
 </script>
 
