@@ -79,13 +79,14 @@
 
 <script>
 import firebase from "firebase";
+import db from "../../firebase/firebaseDB";
 import Miniloading from "../loading/Miniloading";
 export default {
   name: "Navbar",
   components: {
     Miniloading
   },
-  data: function() {
+  data() {
     return {
       loading: false,
       usuario: "",
@@ -94,9 +95,12 @@ export default {
     };
   },
   mounted() {
-    this.auth = firebase.auth().getRedirectResult();
+    this.isLoggued();
   },
   methods: {
+    isLoggued() {
+      this.auth = firebase.auth().currentUser.getIdToken();
+    },
     login() {
       this.loading = true;
       firebase
@@ -113,6 +117,7 @@ export default {
               showConfirmButton: false,
               timer: 1500
             });
+            this.credential(user.user.uid);
             this.loading = false;
           },
           error => {
@@ -159,7 +164,8 @@ export default {
               showConfirmButton: false,
               timer: 1500
             });
-            this.$router.go({ path: this.$router.path });
+            this.login();
+            ///this.$router.go({ path: this.$router.path });
             this.loading = false;
           },
           err => {
@@ -174,6 +180,11 @@ export default {
           }
         );
       e.preventDefault();
+    },
+    credential(uuid) {
+      db.collection("cliente")
+        .doc(uuid)
+        .set({ id: uuid, usuario: this.usuario });
     }
   }
 };
