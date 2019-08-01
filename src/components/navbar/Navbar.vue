@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <router-link class="navbar-brand" to="/">Cinemas Riaño</router-link>
+      <router-link class="navbar-brand" to="/">CineHub</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -16,7 +16,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <router-link class="navbar-brand" to="/">
+            <router-link class="navbar-brand" to="/cartelera">
               Películas
               <span class="sr-only">(current)</span>
             </router-link>

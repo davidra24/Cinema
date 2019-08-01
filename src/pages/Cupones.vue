@@ -63,13 +63,13 @@ export default {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           this.session = user.uid;
-          //this.$router.push("/cupones");
         } else {
           this.$router.push("/");
         }
       });
     },
     getCoupon() {
+      this.coupons = [];
       db.collection("cupon")
         .get()
         .then(querySnapshot => {
@@ -84,37 +84,46 @@ export default {
           this.loading = false;
         })
         .then(() => {
+          this.coupon_client = [];
+          db.collection("cupon_cliente")
+            .get()
+            .then(querySnapshot => {
+              querySnapshot.forEach(doc => {
+                const _id = doc.data().id_cliente;
+                if (_id == this.session) {
+                  const data = {
+                    id: doc.id,
+                    id_cliente: doc.data().id_cliente,
+                    id_cupon: doc.data().id_cupon,
+                    usado: doc.data().usado
+                  };
+                  this.coupon_client.push(data);
+                }
+              });
+              this.loadingUserCupons = false;
+              this.loadingAviableCupons = false;
+            })
+            .catch(error => {
+              console.log("Error " + error);
+            });
+        })
+        .then(() => {
+          this.couponsRender = [];
           this.coupons.forEach(cupon => {
+            console.log("Couponess ", this.coupons);
+
             var reclamed = false;
             this.coupon_client.forEach(cupon_c => {
-              if (cupon_c.id == cupon.id) {
+              console.log("cupon_c ", cupon_c);
+
+              console.log("Coupines cliente... ", this.coupon_client);
+              if (cupon_c.id_cupon == cupon.id) {
                 reclamed = true;
               }
             });
-            this.couponsRender.push(cupon);
+            this.couponsRender.push({ ...cupon, reclamed });
             this.loadingUserCupons = false;
           });
-        })
-        .catch(error => {
-          console.log("Error " + error);
-        });
-    },
-    getUserCoupons() {
-      db.collection("cupon_cliente")
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            const _id = doc.data().id_cliente;
-            if (_id == this.session) {
-              const data = {
-                id: doc.id,
-                ...doc.data()
-              };
-              this.coupon_client.push(data);
-              this.loadingUserCupons = false;
-            }
-          });
-          this.loadingAviableCupons = false;
         })
         .catch(error => {
           console.log("Error " + error);
@@ -130,18 +139,31 @@ export default {
       });
     },
     noExisteCupon(id_cupon) {
-      this.$swal({
-        position: "top-end",
-        type: "success",
-        title: "Cupón reclamado",
-        showConfirmButton: false,
-        timer: 1500
-      });
+      const usado = false;
+      const id_cliente = this.session;
+      db.collection("cupon_cliente")
+        .add({
+          id_cupon,
+          id_cliente,
+          usado
+        })
+        .then(() => {
+          this.$swal({
+            position: "top-end",
+            type: "success",
+            title: "Cupón reclamado",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        })
+        .catch(error => {
+          console.log("Error " + error);
+        });
+      this.getCoupon();
     }
   },
   mounted() {
     this.getSession();
-    this.getUserCoupons();
     this.getCoupon();
   }
 };
