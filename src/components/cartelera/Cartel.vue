@@ -24,7 +24,7 @@ export default {
   height: 357px;
 }
 .cart {
-  margin: 20px;
+  margin: 30px;
 }
 .centered {
   width: 150px;

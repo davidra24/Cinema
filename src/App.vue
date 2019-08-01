@@ -13,7 +13,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+body {
+  background-image: url("https://gallery.yopriceville.com/var/albums/Backgrounds/Cinema_Background.jpg?m=1399676400");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #464646;
+}
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

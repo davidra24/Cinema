@@ -3,12 +3,14 @@
     <div class="container-fluid d-flex justify-content-center">
       <div class="row">
         <div class="col-12">
-          <h2>Cartelera</h2>
+          <h1>
+            <strong>Cartelera</strong>
+          </h1>
           <div v-if="loading">
             <Loading />
           </div>
           <div class="row" v-else>
-            <div v-for="movie in movies" :key="movie.id" class="row">
+            <div v-for="movie in movies" :key="movie.id">
               <Cartel :pelicula="movie" class="col-12 col-md-6 col-lg-4" />
             </div>
           </div>
@@ -19,7 +21,7 @@
 </template>
 
 <script>
-import db from "../firebase/firebaseInit";
+import db from "../firebase/firebaseDB";
 import Navbar from "../components/navbar/Navbar";
 import Cartel from "../components/cartelera/Cartel";
 import Loading from "../components/loading/Loading";
@@ -61,7 +63,4 @@ export default {
 </script>
 
 <style>
-h2 {
-  margin: 1em;
-}
 </style>

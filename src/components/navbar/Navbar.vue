@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Bienvenido a cinemas Riaño</h1>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <router-link class="navbar-brand" to="/">Cinemas Riaño</router-link>
       <button
         class="navbar-toggler"
@@ -34,7 +33,7 @@
             placeholder="Contraseña"
             aria-label="Search"
           />
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Login</button>
         </form>
       </div>
     </nav>

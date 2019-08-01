@@ -165,6 +165,30 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.23.tgz#a0df05b210ff03c65ecb3589390095631b95e1f8"
   integrity sha512-BJqOF51sPQjmRoX+WFMbZ5mhuy53JrFN0t1KY+HffcvDRb+82+vkFatKnwG3wTCKV183vJW5tGQIytb4T8pUBg==
 
+"@fortawesome/fontawesome-common-types@^0.2.20":
+  version "0.2.20"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.20.tgz#b5450b07400aea96d87d24e98e22d4a3d8d59305"
+  integrity sha512-5wo0pMNS4gWTkplFAPSfNq4poXwLcgj8+khZs9/zbWMxC0hi6qnehXOrX7i7+Y7XyTQForja2WpR7Nz6LY2BtQ==
+
+"@fortawesome/fontawesome-svg-core@^1.2.20":
+  version "1.2.20"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.20.tgz#2b562dd73df08c835e1f42c04061029ee77b90b5"
+  integrity sha512-p18GsDaPeZOFKENyigYcEg0ez9UHqUO7wxcdxpoxsb0pMxvt4kW8RTrgUIW1z3/19E/Z1iRQDmB3ZyfZ+CcpSQ==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.20"
+
+"@fortawesome/free-solid-svg-icons@^5.10.0":
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.10.0.tgz#ccc803828f6b71db78414550faa7b1c4ebf494b2"
+  integrity sha512-Ndt0GR9wU66lBLGMRZN2jv8LEDx+VTfwmnqYKLQ3VttH4ikgTpqBhdr7UF4M3GFYt1CwftrPVuKOUAFleYg7xA==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.20"
+
+"@fortawesome/vue-fontawesome@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@fortawesome/vue-fontawesome/-/vue-fontawesome-0.1.6.tgz#18a0f4263b90f65180fc927325ba01896276ea04"
+  integrity sha512-HAGRbrOuGDwwUmCYdpzR0hhNQ3EE30dOS4JiJKcoZ+S4M210CxyU0OXCgzIg3HzK/23rlpHbV8zi9PDDZDnuIw==
+
 "@grpc/proto-loader@^0.5.0":
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@grpc/proto-loader/-/proto-loader-0.5.1.tgz#48492b53cdda353110b51a4b02f465974729c76f"
