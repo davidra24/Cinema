@@ -6,10 +6,11 @@ import Pelicula from '../pages/Pelicula';
 import NotFound from '../components/notFound/NotFound';
 import Reserva from '../pages/Reserva';
 import Reservas from '../pages/Reservas';
+import firebase from "firebase";
 
 Vue.use(Router);
 
-export default new Router({
+const router= new Router({
   mode: 'history',
   routes: [
     {
@@ -26,11 +27,17 @@ export default new Router({
       path: '/reservas',
       name: 'Reservas',
       component: Reservas,
+      meta:{
+        autenticado:true
+      }
     },
     {
       path: '/reserva/:id/:id_pelicula',
       name: 'Reserva',
       component: Reserva,
+      meta:{
+        autenticado:true
+      }
     },
     {
       path: '/cartelera/:id',
@@ -41,6 +48,9 @@ export default new Router({
       path: '/cupones',
       name: 'Cupones',
       component: Cupones,
+      meta:{
+        autenticado:true
+      }
     },
     {
       path: '*',
@@ -49,3 +59,15 @@ export default new Router({
     },
   ],
 });
+router.beforeEach((to, from, next) => {
+  let usuario= firebase.auth().currentUser;
+  let autorizacion= to.matched.some(record=>record.meta.autenticado);
+  if(autorizacion && !usuario){
+    next('cartelera');
+  
+  }else{
+    next();
+  }
+})
+
+export default router;
