@@ -93,6 +93,9 @@ export default {
       auth: null
     };
   },
+  mounted() {
+    this.auth = firebase.auth().getRedirectResult();
+  },
   methods: {
     login() {
       this.loading = true;
