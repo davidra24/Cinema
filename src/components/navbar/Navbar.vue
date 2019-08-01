@@ -17,7 +17,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <router-link class="navbar-brand" to="/cartelera">
+            <router-link class="navbar-brand" to="/">
               Películas
               <span class="sr-only">(current)</span>
             </router-link>
@@ -26,16 +26,20 @@
             <router-link class="navbar-brand" to="/cupones">Cupones</router-link>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Usuario" aria-label="Search" />
-          <input
+        
+        <!-- <form @submit.prevent="login" class="form-inline my-2 my-lg-0">-->
+          <form class="form-inline my-2 my-lg-0">
+          <input v-model="usuario" class="form-control mr-sm-2" type="text" placeholder="Usuario" aria-label="Search" />
+          <input v-model="contrasena"
             class="form-control mr-sm-2"
             type="password"
             placeholder="Contraseña"
             aria-label="Search"
           />
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+          <button class="btn btn-outline-success my-2 my-sm-0" @click="login" type="button">Login</button>
+          <button class="btn btn-outline-warning my-2 my-sm-0" @click="register" type="button">Register</button>
         </form>
+        
       </div>
     </nav>
     <slot />
@@ -43,9 +47,41 @@
 </template>
 
 <script>
+import firebase from 'firebase';
 export default {
   name: "Navbar",
-  components: {}
+  components: {},
+  data:function() {
+    return {
+      usuario:'',
+      contrasena:''
+    };
+  },
+  methods:{
+    login(){
+      firebase.auth().signInWithEmailAndPassword(this.usuario,this.contrasena)
+      .then((user)=>alert('Bienvenid@'), (error)=>alert(error));
+  
+    },
+    register: function(e) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.usuario, this.contrasena)
+        .then(
+          user => {
+
+            
+            alert(`Account Created for ${user}`);
+            this.$router.go({ path: this.$router.path });
+          },
+          err => {
+            alert(err.message);
+          }
+        );
+      e.preventDefault();
+    },
+    
+  }
 };
 </script>
 
