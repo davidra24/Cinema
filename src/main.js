@@ -7,6 +7,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faGift } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueSweetalert2 from 'vue-sweetalert2';
+import firebase from "firebase";
 
 library.add(faGift);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
@@ -14,12 +15,14 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 Vue.use(VueSweetalert2);
+firebase.auth().onAuthStateChanged(function(user){
 new Vue({
   el: '#app',
   router,
   store,
   components: { App },
   template: '<App/>',
+});
 });
 
 var style = document.createElement('style');
