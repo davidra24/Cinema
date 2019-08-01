@@ -1,8 +1,8 @@
 <template>
-  <div class="cartel">
-    <router-link to="'/cartelera/'+pelicula.id">
-      <img v-src="this.pelicula.imagen" alt />
-      <strong>{{this.pelicula.nombre}}</strong>
+  <div class="cart">
+    <router-link :to="`/cartelera/${pelicula.id}`">
+      <img class="resize image-fluid" :src="pelicula.imagen" :alt="`${pelicula.id}`" />
+      <strong class="centered">{{this.pelicula.nombre}}</strong>
     </router-link>
   </div>
 </template>
@@ -13,13 +13,29 @@ export default {
   name: "Cartel",
   data() {
     return {};
+  },
+  mounted() {
+    console.log(this.pelicula);
   }
 };
 </script>
 
 <style>
-.cartel {
-  width: 5em;
-  height: 8em;
+.resize {
+  width: 250px;
+  height: 357px;
+}
+.cart {
+  margin: 20px;
+}
+.centered {
+  width: 150px;
+  position: absolute;
+  bottom: 20px;
+  right: -50px;
+  background-color: black;
+  color: white;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 </style>

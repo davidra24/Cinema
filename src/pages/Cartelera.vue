@@ -1,14 +1,15 @@
 <template>
   <Navbar>
-    <div class="container-fluid">
+    <div class="container-fluid d-flex justify-content-center">
       <div class="row">
         <div class="col-12">
           <h2>Cartelera</h2>
-          <div class="row">
-            <div>
-              <div v-for="movie in movies" :key="movie.id" class="col-12 col-md-6 col-lg-4">
-                <Cartel :pelicula="movie" />
-              </div>
+          <div v-if="loading">
+            <Loading />
+          </div>
+          <div class="row" v-else>
+            <div v-for="movie in movies" :key="movie.id" class="row">
+              <Cartel :pelicula="movie" class="col-12 col-md-6 col-lg-4" />
             </div>
           </div>
         </div>
@@ -18,23 +19,39 @@
 </template>
 
 <script>
+import db from "../firebase/firebaseInit";
 import Navbar from "../components/navbar/Navbar";
 import Cartel from "../components/cartelera/Cartel";
-import { get } from "../data/Api";
+import Loading from "../components/loading/Loading";
 export default {
   name: "Cartelera",
   data() {
     return {
+      loading: true,
       movies: []
     };
   },
   components: {
     Navbar,
-    Cartel
+    Cartel,
+    Loading
   },
   methods: {},
   mounted() {
-    get("pelicula");
+    db.collection("pelicula")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          const data = {
+            id: doc.id,
+            nombre: doc.data().nombre,
+            imagen: doc.data().imagen
+          };
+          this.movies.push(data);
+          console.log(this.movies);
+        });
+        this.loading = false;
+      });
   },
   computed: {}
 };

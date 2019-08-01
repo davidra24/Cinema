@@ -1,5 +1,4 @@
-import firebase from 'firebase';
-const firebaseConfig = {
+export default {
   apiKey: 'AIzaSyDlEAL7uK6KKtVs1s26m4kUyOAwH0-bWIM',
   authDomain: 'cine-7e1d8.firebaseapp.com',
   databaseURL: 'https://cine-7e1d8.firebaseio.com',
@@ -9,9 +8,3 @@ const firebaseConfig = {
   appId: '1:508952987792:web:093e05f2f222c242',
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-export default {
-  database: firebase.firestore(),
-  authentication: firebase.auth(),
-};

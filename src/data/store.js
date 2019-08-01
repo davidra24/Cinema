@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    loading: true,
     user: null,
     authId: '',
     movies: '',
@@ -12,7 +13,11 @@ export default new Vuex.Store({
     show: [],
     reservation: [],
   },
-  mutations: {},
+  mutations: {
+    getMovies() {},
+    setLoading(value) {
+      this.state.loading = value;
+    },
+  },
   actions: {},
-  getters: {},
 });
