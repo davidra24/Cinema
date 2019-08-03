@@ -12,16 +12,18 @@
               <Video :video-id="video"></Video>
             </div>
             <br />
-            <ul class="list-group" v-for="funcion in funciones" :key="funcion.id">
-              <li
-                class="list-group-item"
-              >Fecha: {{funcion.fecha}} Hora: {{funcion.hora}} Sala: {{funcion.nombre_sala}} Valor:{{funcion.valor}} Valor con descuento: {{funcion.valor-(funcion.valor*funcion.descuento)}}</li>
-              <router-link
-                :to="`/reserva/${funcion.id}/${funcion.id_pelicula}`"
-                class="btn btn-info btn-block"
-              >Reservar</router-link>
-              <br />
-            </ul>
+            <div v-if="session">
+              <ul class="list-group" v-for="funcion in funciones" :key="funcion.id">
+                <li
+                  class="list-group-item"
+                >Fecha: {{funcion.fecha}} Hora: {{funcion.hora}} Sala: {{funcion.nombre_sala}} Valor:{{funcion.valor}} Valor con descuento: {{funcion.valor-(funcion.valor*funcion.descuento)}}</li>
+                <router-link
+                  :to="`/reserva/${funcion.id}/${funcion.id_pelicula}`"
+                  class="btn btn-info btn-block"
+                >Reservar</router-link>
+                <br />
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -31,6 +33,7 @@
 
 <script>
 import db from "../firebase/firebaseDB";
+import firebase from "firebase";
 import Navbar from "../components/navbar/Navbar";
 import Video from "../components/video/Video";
 import Loading from "../components/loading/Loading";
@@ -43,7 +46,8 @@ export default {
       id: this.$route.params.id,
       video: null,
       nombre: null,
-      funciones: []
+      funciones: [],
+      session: firebase.auth().currentUser
     };
   },
   methods: {
