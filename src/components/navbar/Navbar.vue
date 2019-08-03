@@ -1,7 +1,10 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <router-link class="navbar-brand" to="/">CineHub</router-link>
+      <router-link class="navbar-brand" to="/">
+        Cine
+        <strong>Hub</strong>
+      </router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -21,11 +24,11 @@
               <span class="sr-only">(current)</span>
             </router-link>
           </li>
-          <div v-if="auth">
+          <!--<div v-if="auth">
             <li class="nav-item">
               <router-link class="navbar-brand" to="/cupones">Cupones</router-link>
             </li>
-          </div>
+          </div>-->
           <div v-if="auth">
             <li class="nav-item">
               <router-link class="navbar-brand" to="/reservas">Reservas</router-link>

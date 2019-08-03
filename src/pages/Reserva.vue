@@ -1,7 +1,7 @@
 <template>
   <Navbar>
     <div class="container d-flex justify-content-center">
-      <div v-if="loading||loadingPelicula">
+      <div v-if="loading||loadingPelicula||loadingCoupons">
         <Loading />
       </div>
       <div v-else>
@@ -26,6 +26,12 @@
               <option v-for="value in values" :key="value" :value="value">{{value}}</option>
             </select>
             <br />
+            <br />
+            <label class="bg-w">Cupón</label>
+            <select class="form-control" v-model="id_cupon" @change="onChange">
+              <option v-for="cupon in coupons" :key="cupon.id" :value="cupon.id">{{cupon.id}}</option>
+            </select>
+            <br />
             <button class="btn btn-success btn-block" @click="post">Reservar</button>
           </div>
         </div>
@@ -46,8 +52,11 @@ export default {
       session: firebase.auth().currentUser.uid,
       values: 0,
       numero_sillas: 1,
+      descuento_cupon: 0,
+      id_cupon: 0,
       id_reserva: 0,
       loading: true,
+      loadingCoupons: true,
       loadingPelicula: true,
       id: this.$route.params.id,
       id_pelicula: this.$route.params.id_pelicula,
@@ -60,10 +69,21 @@ export default {
       sillasOcupadas: 0,
       base: 0,
       imagen: null,
-      nombre: null
+      nombre: null,
+      coupons: [],
+      userCupons: []
     };
   },
   methods: {
+    getSelectedCoupon() {
+      var descuento;
+      this.coupons.map(cupon => {
+        if (cupon.id == this.id_cupon) {
+          descuento = cupon.valor;
+        }
+      });
+      return descuento;
+    },
     getPelicula() {
       db.collection("pelicula")
         .doc(this.id_pelicula)
@@ -76,12 +96,35 @@ export default {
           this.nombre = data.nombre;
           this.imagen = data.imagen;
           this.loadingPelicula = false;
+          this.getUserCoupon();
         });
     },
-    onChange() {
-      const total = parseInt(this.numero_sillas * this.base);
-      this.valor = total;
+    getCoupons() {
+      db.collection("cupon")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const data = {
+              id: doc.id,
+              descuento: doc.data().descuento,
+              valor: doc.data().valor
+            };
+            if (!this.validateCoupon(data.id)) {
+              this.coupons.push(data);
+            }
+          });
+        });
+      this.loadingCoupons = false;
     },
+    async onChange() {
+      var total = await parseInt(this.numero_sillas * this.base);
+      if (this.id_cupon) {
+        this.descuento_cupon = this.getSelectedCoupon();
+        total = await parseFloat(total - total * this.descuento_cupon);
+      }
+      this.valor = await total;
+    },
+
     get() {
       db.collection("funcion")
         .doc(this.id)
@@ -105,6 +148,32 @@ export default {
           this.loading = false;
         });
     },
+    getUserCoupon() {
+      db.collection("cupon_cliente")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(element => {
+            if (element.data().id_cliente == this.session) {
+              const data = {
+                id: querySnapshot.id,
+                id_cupon: element.data().id_cupon
+              };
+              const id_cupon = data.id_cupon;
+              this.userCupons.push(id_cupon);
+            }
+          });
+        });
+      this.getCoupons();
+    },
+    validateCoupon(id) {
+      var exist = false;
+      this.userCupons.map(user_cupons => {
+        if (id == user_cupons) {
+          exist = true;
+        }
+      });
+      return exist;
+    },
     post() {
       db.collection("reservas")
         .add({
@@ -123,14 +192,22 @@ export default {
           nombre_pelicula: this.nombre
         })
         .then(() => {
-          db.collection("funcion")
-            .doc(this.id_reserva)
-            .update({
-              sillas_ocupadas: parseInt(
-                this.sillasTotales - (this.sillasTotales - this.numero_sillas)
-              )
+          db.collection("cupon_cliente")
+            .add({
+              id_cupon: this.id_cupon,
+              id_cliente: this.session
+            })
+            .then(() => {
+              db.collection("funcion")
+                .doc(this.id_reserva)
+                .update({
+                  sillas_ocupadas: parseInt(
+                    this.sillasTotales -
+                      (this.sillasTotales - this.numero_sillas)
+                  )
+                });
+              this.$router.push("/reservas");
             });
-          this.$router.push("/reservas");
         });
     }
   },
